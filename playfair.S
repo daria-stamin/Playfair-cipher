@@ -1,15 +1,15 @@
-. data
-      cheie : . asciiz " SECRET "
-      mesajul : . asciiz " COOPTAT "
-      matrice : . space 25        # matricea 5 x5 ( liniara )
-      frecv : . space 26          # vector de frecventa
-      procesat : . space 167      # vectorul in care o sa punem in perechi mesajul si adaugam X-urile marimea lui variaza de dimensiunea mesajului
+.data
+      cheie : .asciz " SECRET "
+      mesajul : .asciz " COOPTAT "
+      matrice : .space 25        # matricea 5 x5 ( liniara )
+      frecv : .space 26          # vector de frecventa
+      procesat : .space 167      # vectorul in care o sa punem in perechi mesajul si adaugam X-urile marimea lui variaza de dimensiunea mesajului
       encriptat: .space 167       # vectorul cu mesajul in care o sa apara mesajul encriptat
       decriptat: .space 167       # vectorul cu mesajul in care o sa apara mesajul decriptat
-      newline : . asciiz " \ n "
+      newline : .asciz " \ n "
 
-. text
-. global main
+.text
+.global main
 
 main :
       la t0 , frecv             # t0 -> adresa frecv
@@ -32,11 +32,11 @@ init_frecv :
 cheie_loop :
         lb t0 , 0( s0 )                          # t0 = litera curenta din CHEIE
         beqz t0 , start_alfabet                  # daca ’\0 ’ , trecem la completarea matricei cu
-        literele nefolosite din alfabet
+       # literele nefolosite din alfabet
         
         # daca litera == ’J ’ , o inlocuim cu ’I ’
-        li t1 , ’J ’                   # t1 = J
-        li t2 , ’I ’                   # t2 = I
+        li t1 , 'J'                   # t1 = J
+        li t2 , 'I'                   # t2 = I
         beq t0 , t1 , inlocuire        # t0 ( litera curenta ) == t1 ( j ) facem salt
         j verif_frecv
 
@@ -45,7 +45,7 @@ inlocuire :
 
 verif_frecv :
 
-        addi t3 , t0 , -’A ’         # t3 ( index ) = litera curenta - ’A ’ calculez indexul unei litere in alfabet
+        addi t3 , t0 , -'A'         # t3 ( index ) = litera curenta - ’A ’ calculez indexul unei litere in alfabet
         la t4 , frecv                # t4 -> pointer adresa vector de frecventa
         add t4 , t4 , t3             # pun in vectorul de frecventa l
         lb t5 , 0( t4 )              # dau load in t5 la primul element din frecv care e 0
@@ -67,16 +67,16 @@ skip_key :
 # Completare alfabet
 
 start_alfabet :
-        li t0 , ’A ’                # incarca prima litera din alfabet ’A ’ in t0 pentru a incape verificarea si completarea
+        li t0 , 'A'                # incarca prima litera din alfabet ’A ’ in t0 pentru a incape verificarea si completarea
 
  copletare_alfabet :
-        li t1 , ’Z ’                    # t1 = Z pentru a putea forma conditie de iesit
+        li t1 , 'Z'                    # t1 = Z pentru a putea forma conditie de iesit
         bgt t0 , t1 , inchidem_alf          # daca am trecut de Z , gata
         
-        li t2 , ’J ’                    # punem in t2 j ca sa il putem compara
+        li t2 , 'J'                    # punem in t2 j ca sa il putem compara
         beq t0 , t2 , trecem_peste      # daca t0 ( litera curenta ) este egal cu t2 , sarim peste J
         
-        addi t3 , t0 , -’A ’            # calculez indexul unei litere in alfabet
+        addi t3 , t0 , -'A'            # calculez indexul unei litere in alfabet
         la t4 , frecv                   # t4 -> pointer adresa vector de frecventa
         add t4 , t4 , t3                # pun in vectorul de frecventa l
         lb t5 , 0( t4 )                 # dau load in t5 la primul element din frecv care e
@@ -95,8 +95,8 @@ trecem_peste :
         j copletare_alfabet             # facem salt si trecem la urmatoare litera dinalfabet
 
 inchidem_alf :                           # functia care ca opreasca loop ul si sa continue codul    
-       li t1 , ’Z’                      # am pus o instructiune cere nu face nimic diferit ca sa nu imi dea eroare 
-
+       li t1 , 'Z'                      # am pus o instructiune cere nu face nimic diferit ca sa nu imi dea eroare 
+ 
   #Procesare mesaj
 preprocess_mesaj :
         la t0 , mesaj         # t0 -> pointer mesaj original
@@ -107,12 +107,12 @@ citire_primul_caracter :
         beqz t2 , inchidem_ch     # daca e ’\0 ’ , iesim
         
         
-        li t3 , ’ ’           # daca e spatiu , il ignoram
+        li t3 , ' '           # daca e spatiu , il ignoram
         beq t2 , t3 , skip_primul
         
-        li t3 , ’J ’                          # folosim aceeasi idee ca la cheie pt
-        inlocuire J
-        li t4 , ’I ’
+        li t3 , 'J'                          # folosim aceeasi idee ca la cheie pt
+        #inlocuire J
+        li t4 , 'I'
         beq t2 , t3 , inlocure_j_mesaj1       # daca e J , il inlocuim cu I
         j primul_ok
 
@@ -126,10 +126,10 @@ citire_al_doilea_caracter :                   # identic cu citirea primului din 
         lb t5 , 0( t0 )                       # t5 = a doua litera
         beqz t5 , ultima_litera_singura       # daca s - a terminat sirul
         
-        li t3 , ’ ’                           # ignoram spatiile
+        li t3 , ' '                          # ignoram spatiile
         beq t5 , t3 , skip_al_doilea
         
-        li t3 , ’J ’                           # J -> I
+        li t3 , 'J'                           # J -> I
         beq t5 , t3 , inlocure_j_mesaj2
         j comparare
 
@@ -148,7 +148,7 @@ comparare :
 inserare_X :
         # scriem litera + X
         sb t2 , 0( t1 )
-        li t6 , ’X ’
+        li t6 , 'X'
         sb t6 , 1( t1 )
         addi t1 , t1 , 2
         # NU consumam a doua litera
@@ -166,7 +166,7 @@ ultima_litera_singura :
 
         sb t2 , 0( t1 )         # a ramas o singura litera -> adaugam X
         
-        li t6 , ’X ’
+        li t6 , 'X'
         sb t6 , 1( t1 )
         addi t1 , t1 , 2
         j inchidem_ch
