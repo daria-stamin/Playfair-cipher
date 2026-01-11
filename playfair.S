@@ -1,15 +1,15 @@
 .data
-      cheie : .asciz " SECRET "
-      mesajul : .asciz " COOPTAT "
+      cheie : .asciiz " SECRET "
+      mesajul : .asciiz " COOPTAT "
       matrice : .space 25        # matricea 5 x5 ( liniara )
       frecv : .space 26          # vector de frecventa
       procesat : .space 167      # vectorul in care o sa punem in perechi mesajul si adaugam X-urile marimea lui variaza de dimensiunea mesajului
       encriptat: .space 167       # vectorul cu mesajul in care o sa apara mesajul encriptat
       decriptat: .space 167       # vectorul cu mesajul in care o sa apara mesajul decriptat
-      newline : .asciz " \ n "
+      newline : .asciiz " \ n "
 
 .text
-.global main
+.globl main
 
 main :
       la t0 , frecv             # t0 -> adresa frecv
